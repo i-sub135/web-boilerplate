@@ -1,0 +1,14 @@
+{% extends 'navigation.html' %}
+
+{% block content %}
+  <h2>Example to Copy Feature Page</h2>
+  <p>This is an example page for the "example-to-copy" feature.</p>
+  <hr />
+  <div id="table">
+    {% include 'exampletocopy/template/table.html' %}
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="/features/exampletocopy/assets/example-to-copy.js" defer></script>
+{% endblock %}

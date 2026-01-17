@@ -1,0 +1,18 @@
+<table class="table table-striped table-hover">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for u in users %}
+    <tr>
+      <td>{{ u.ID }}</td>
+      <td>{{ u.Name }}</td>
+      <td>{{ u.Email }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

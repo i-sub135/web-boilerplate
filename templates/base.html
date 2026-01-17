@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Web App{% endblock %}</title>
+
+    <!-- Tabler CSS -->
+    <link href="/public/lib/tabler/css/tabler.min.css" rel="stylesheet" />
+    <link href="/public/lib/tabler/css/tabler-vendors.min.css" rel="stylesheet" />
+    <link href="/public/lib/tabler/css/demo.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="/public/lib/bootstrap-icons/bootstrap-icons.css" />
+    {% block head %}{% endblock %}
+    
+    <style>
+    /* Default page wrapper margin for sidebar */
+    .page-wrapper {
+      margin-left: 15rem;
+      transition: margin-left 0.3s ease;
+    }
+    /* Sidebar collapse styles */
+    .sidebar-collapsed aside.navbar-vertical {
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 10;
+    }
+    .sidebar-collapsed aside.navbar-vertical .navbar-brand span {
+      display: none;
+    }
+    .sidebar-collapsed aside.navbar-vertical .nav-link-title {
+      display: none;
+    }
+    .sidebar-collapsed aside.navbar-vertical .navbar-nav .nav-link {
+      justify-content: center;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    /* Make content full width when sidebar collapsed */
+    .sidebar-collapsed .page-wrapper {
+      margin-left: 0 !important;
+    }
+    /* Show toggle button when collapsed */
+    .sidebar-collapsed #sidebar-toggle {
+      position: fixed;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 20;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Hide body until DOM is ready */
+    body.loading {
+      display: none;
+    }
+    
+    </style>
+</head>
+<body class="layout-fluid loading">
+  <div class="page">
+    {% block navigation %}{% endblock %}
+
+    <div class="page-wrapper">
+      <!-- Full Page Header -->
+      <header class="navbar navbar-expand-md navbar-light d-print-none">
+        <div class="container-xl">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <!-- Sidebar Toggle Button -->
+          <button class="btn btn-icon btn-ghost-secondary d-none d-md-inline-flex ms-2" type="button" id="sidebar-toggle">
+            <i class="bi bi-list" id="sidebar-toggle-icon"></i>
+          </button>
+          
+          <!-- Spacer to push items to right -->
+          <div class="flex-fill"></div>
+          
+          <div class="navbar-nav">
+            <div class="nav-item dropdown">
+              <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
+                <div class="d-none d-xl-block ps-2">
+                  <div>Admin User</div>
+                  <div class="mt-1 small text-muted">Administrator</div>
+                </div>
+                <div class="ps-2">
+                  <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
+                </div>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" href="#">Profile</a>
+                <a class="dropdown-item" href="#">Settings</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Logout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-body">
+        <div class="container-fluid px-6">
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/public/js/jquery.min.js"></script>
+  <script src="/public/lib/tabler/js/tabler.min.js"></script>
+  {% block scripts %}{% endblock %}
+  
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Remove loading class to show the body
+    document.body.classList.remove('loading');
+    
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarIcon = document.getElementById('sidebar-toggle-icon');
+    
+    // Load saved state from localStorage
+    const savedState = localStorage.getItem('sidebar-collapsed');
+    if (savedState === 'true') {
+      document.body.classList.add('sidebar-collapsed');
+      sidebarIcon.classList.remove('bi-list');
+      sidebarIcon.classList.add('bi-list-nested');
+    }
+    
+    sidebarToggle.addEventListener('click', function() {
+      document.body.classList.toggle('sidebar-collapsed');
+      
+      const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+      
+      // Save state to localStorage
+      localStorage.setItem('sidebar-collapsed', isCollapsed);
+      
+      if (isCollapsed) {
+        sidebarIcon.classList.remove('bi-list');
+        sidebarIcon.classList.add('bi-list-nested');
+      } else {
+        sidebarIcon.classList.remove('bi-list-nested');
+        sidebarIcon.classList.add('bi-list');
+      }
+    });
+  });
+  </script>
+</body>
+</html>
